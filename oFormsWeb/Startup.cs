@@ -9,6 +9,8 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using oFormsWeb.Models;
+using oFormsWeb.Repositories;
 
 namespace oFormsWeb
 {
@@ -33,6 +35,11 @@ namespace oFormsWeb
             .AddCookie();
 
             services.AddMvc();
+
+            services.Configure<FormsConfiguration>(Configuration.GetSection("FormsConfiguration"));
+            // Add application services.
+            services.AddSingleton<IFormRepository, FormRepository>();
+            services.AddSingleton<IUserRepository, UserRepository>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

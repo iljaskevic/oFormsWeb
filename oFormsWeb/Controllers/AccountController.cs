@@ -11,26 +11,48 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
+using oFormsWeb.Repositories;
 
 namespace oFormsWeb.Controllers
 {
     [Route("[controller]/[action]")]
-    public class AccountController : Controller
+    public class AccountController : BaseController
     {
         private readonly AzureAdB2COptions _options;
+        private readonly IUserRepository _userRepository;
+        private readonly ILogger<AccountController> _logger;
 
-        public AccountController(IOptions<AzureAdB2COptions> b2cOptions)
+        public AccountController(IOptions<AzureAdB2COptions> b2cOptions, IUserRepository userRepository, ILogger<AccountController> logger)
         {
             _options = b2cOptions.Value;
+            _userRepository = userRepository;
+            _logger = logger;
         }
 
         [HttpGet]
         public IActionResult SignIn()
         {
-            var redirectUrl = Url.Action(nameof(HomeController.Index), "Home");
+            var redirectUrl = Url.Action(nameof(AccountController.PostSignIn), "Account");
             return Challenge(
                 new AuthenticationProperties { RedirectUri = redirectUrl },
                 OpenIdConnectDefaults.AuthenticationScheme);
+        }
+
+        [HttpGet]
+        public IActionResult PostSignIn()
+        {
+            _logger.LogDebug("**** Post Sign-Up ***");
+            if (User.Identity.IsAuthenticated)
+            {
+                _logger.LogDebug("User claim****(New User): " + User.FindFirstValue("newUser"));
+                if (!String.IsNullOrWhiteSpace(User.FindFirstValue("newUser")))
+                {
+                    _logger.LogDebug("New user - Adding to user table - " + GetUserObjectId());
+                    _userRepository.InsertNewUser(GetUserObjectId());
+                    return RedirectToAction(nameof(FormController.Index), "Form");
+                }
+            }
+            return RedirectToAction(nameof(FormController.Index), "Form");
         }
 
         [HttpGet]
