@@ -64,6 +64,7 @@ namespace oFormsWeb.Controllers
                 newForm.ClientId = GetUserObjectId();
                 newForm.Cors = "";
                 newForm.ApiKey = "";
+                newForm.FormTemplate = new FormTemplate(new MessageFormat());
                 _formRepository.InsertOrUpdateForm(GetUserObjectId(), newForm);
                 return RedirectToAction(nameof(Index));
             }

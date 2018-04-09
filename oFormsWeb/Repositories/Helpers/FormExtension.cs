@@ -15,7 +15,10 @@ namespace oFormsWeb.Repositories.Helpers
             if (form == null) return null;
             var result = new FormTableEntity(form.ClientId, form.Id);
             result.ApiKey = form.ApiKey;
-            result.FormTemplate = JsonConvert.SerializeObject(form);
+            result.Cors = form.Cors;
+            result.Name = form.Name;
+            result.Desc = form.Desc;
+            result.FormTemplate = JsonConvert.SerializeObject(form.FormTemplate);
 
             return result;
         }
@@ -27,9 +30,10 @@ namespace oFormsWeb.Repositories.Helpers
             result.Id = formEntity.RowKey;
             result.ClientId = formEntity.PartitionKey;
             result.ApiKey = formEntity.ApiKey;
-            var form = JsonConvert.DeserializeObject<Form>(formEntity.FormTemplate);
-            result.Name = form.Name;
-            result.Desc = form.Desc;
+            result.Cors = formEntity.Cors;
+            result.Name = formEntity.Name;
+            result.Desc = formEntity.Desc;
+            result.FormTemplate = JsonConvert.DeserializeObject<FormTemplate>(formEntity.FormTemplate);
             return result;
         }
     }
