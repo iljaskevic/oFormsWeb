@@ -26,7 +26,7 @@
             @Html.DisplayNameFor(model => model.ApiKey)
         </dt>
         <dd>
-            @Html.DisplayFor(model => model.ApiKey)
+            @Html.DisplayFor(model => model.ApiKey) | @Html.ActionLink("Edit Template", "Edit", "FormTemplate", new { id = Model.Id })
         </dd>
         <dt>
             @Html.DisplayNameFor(model => model.Cors)

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -23,7 +24,9 @@ namespace oFormsWeb.Models
         public string FromEmail { get; set; }
         public string FromName { get; set; }
         public string Subject { get; set; }
+        [MaxLength(5000)]
         public string MessageTemplate { get; set; }
+        [MaxLength(5000)]
         public string FieldTemplate { get; set; }
     }
 }

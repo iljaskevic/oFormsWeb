@@ -1,0 +1,63 @@
+﻿@model oFormsWeb.Models.FormTemplate
+
+@{
+    ViewData["Title"] = "Edit";
+}
+
+<h2>Edit</h2>
+
+<h4>FormTemplate</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Edit">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="ToEmail" class="control-label"></label>
+                <input asp-for="ToEmail" class="form-control" />
+                <span asp-validation-for="ToEmail" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="ToName" class="control-label"></label>
+                <input asp-for="ToName" class="form-control" />
+                <span asp-validation-for="ToName" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="FromEmail" class="control-label"></label>
+                <input asp-for="FromEmail" class="form-control" />
+                <span asp-validation-for="FromEmail" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="FromName" class="control-label"></label>
+                <input asp-for="FromName" class="form-control" />
+                <span asp-validation-for="FromName" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Subject" class="control-label"></label>
+                <input asp-for="Subject" class="form-control" />
+                <span asp-validation-for="Subject" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="MessageTemplate" class="control-label"></label>
+                <textarea asp-for="MessageTemplate" class="form-control"></textarea>
+                <span asp-validation-for="MessageTemplate" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="FieldTemplate" class="control-label"></label>
+                <textarea asp-for="FieldTemplate" class="form-control"></textarea>
+                <span asp-validation-for="FieldTemplate" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Save" class="btn btn-default" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    @Html.ActionLink("Back to Form Details", "Details", "Form", new { id = ViewData["FormId"] })
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}
