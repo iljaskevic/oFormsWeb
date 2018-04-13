@@ -15,9 +15,9 @@ namespace oFormsWeb.Repositories.Entities
             this.PartitionKey = Consts.AZURE_API_PARTITION_NAME;
             this.RowKey = apiKey;
         }
-        public string ClientId { get; set; }
-        public string FormId { get; set; }
-        public int NumberOfRequests { get; set; }
-        public string FormTemplate { get; set; }
+        //public string ClientId { get; set; }
+        //public string FormId { get; set; }
+       // public int NumberOfRequests { get; set; }
+        public string EmailInfo { get; set; }
     }
 }

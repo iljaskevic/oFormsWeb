@@ -14,10 +14,8 @@ namespace oFormsWeb.Repositories.Helpers
         {
             if (formApiMap == null) return null;
             var result = new ApiFormTableEntity(formApiMap.ApiKey);
-            result.FormTemplate = JsonConvert.SerializeObject(formApiMap.FormTemplate);
-            result.FormId = formApiMap.FormId;
-            result.ClientId = formApiMap.ClientId;
-            result.NumberOfRequests = formApiMap.NumberOfRequests;
+            result.EmailInfo = JsonConvert.SerializeObject(formApiMap.EmailInfo);
+            //result.NumberOfRequests = formApiMap.NumberOfRequests;
             return result;
         }
 
@@ -25,10 +23,9 @@ namespace oFormsWeb.Repositories.Helpers
         {
             if (apiFormEntity == null) return null;
             var result = new FormApiMap();
-            result.FormId = apiFormEntity.FormId;
-            result.ClientId = apiFormEntity.ClientId;
-            result.NumberOfRequests = apiFormEntity.NumberOfRequests;
-            result.FormTemplate = JsonConvert.DeserializeObject<FormTemplate>(apiFormEntity.FormTemplate);
+            result.ApiKey = apiFormEntity.RowKey;
+            //result.NumberOfRequests = apiFormEntity.NumberOfRequests;
+            result.EmailInfo = JsonConvert.DeserializeObject<FormTemplate>(apiFormEntity.EmailInfo);
 
             return result;
         }

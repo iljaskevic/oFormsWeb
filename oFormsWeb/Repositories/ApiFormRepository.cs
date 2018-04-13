@@ -29,11 +29,12 @@ namespace oFormsWeb.Repositories
 
         public void InsertUpdateFormApiMap(string clientId, FormApiMap formApiMap)
         {
-
+            _logger.LogDebug($"Upserting FormApiMap with API key: {formApiMap.ApiKey}");
             CloudTable apiFormTable = GetAPIKeyTable();
             ApiFormTableEntity apiFormTableEntity = formApiMap.ToApiForm();
             TableOperation insertOrReplaceOperation = TableOperation.InsertOrReplace(apiFormTableEntity);
             apiFormTable.ExecuteAsync(insertOrReplaceOperation);
+            _logger.LogDebug($"Finished Upserting FormApiMap with API key: {formApiMap.ApiKey}");
         }
 
         public void DeleteFormApiMap(string apiKey)
@@ -61,12 +62,12 @@ namespace oFormsWeb.Repositories
         public async Task<FormApiMap> GetFormApiMap(string apiKey)
         {
             var start = DateTime.Now;
-            _logger.LogInformation("Started retrieval of FormApiMap: " + start.ToString());
+            _logger.LogInformation($"Started retrieval of FormApiMap ({apiKey}): " + start.ToString());
             CloudTable apiFormTable = GetAPIKeyTable();
-            TableOperation retrieveOperation = TableOperation.Retrieve<ApiFormTableEntity>("form-api-keys", apiKey);
+            TableOperation retrieveOperation = TableOperation.Retrieve<ApiFormTableEntity>(Consts.AZURE_API_PARTITION_NAME, apiKey);
             TableResult retrievedResult = await apiFormTable.ExecuteAsync(retrieveOperation);
             var end = DateTime.Now;
-            _logger.LogInformation("Finished retrieval of FormApiMap: " + DateTime.Now.ToString() + " - (" + end.Subtract(start).TotalMilliseconds + "ms)");
+            _logger.LogInformation($"Finished retrieval of FormApiMap ({apiKey}): " + DateTime.Now.ToString() + " - (" + end.Subtract(start).TotalMilliseconds + "ms)");
             return ((ApiFormTableEntity)retrievedResult.Result).ToApiMap();
         }
     }

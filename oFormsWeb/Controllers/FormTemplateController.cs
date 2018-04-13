@@ -16,11 +16,13 @@ namespace oFormsWeb.Controllers
     {
         private readonly ILogger<FormTemplateController> _logger;
         private readonly IFormRepository _formRepository;
+        private readonly IApiFormRepository _apiFormRepository;
 
-        public FormTemplateController(ILogger<FormTemplateController> logger, IFormRepository formRepository)
+        public FormTemplateController(ILogger<FormTemplateController> logger, IFormRepository formRepository, IApiFormRepository apiFormRepository)
         {
             _logger = logger;
             _formRepository = formRepository;
+            _apiFormRepository = apiFormRepository;
         }
 
         // GET: FormTemplate
@@ -61,7 +63,12 @@ namespace oFormsWeb.Controllers
                 Form editedForm = await _formRepository.GetForm(GetUserObjectId(), id);
                 editedForm.FormTemplate = editedFormTemplate;
                 _formRepository.InsertOrUpdateForm(GetUserObjectId(), editedForm);
-                return RedirectToAction(nameof(FormController.Index), "Form");
+                FormApiMap formApiMap = await _apiFormRepository.GetFormApiMap(editedForm.ApiKey);
+                formApiMap.EmailInfo = editedFormTemplate;
+                _apiFormRepository.InsertUpdateFormApiMap(GetUserObjectId(), formApiMap);
+                ViewData["FormId"] = id;
+                //return RedirectToAction(nameof(FormController.Index), "Form");
+                return View(editedFormTemplate);
             }
             catch
             {

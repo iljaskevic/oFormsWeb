@@ -16,11 +16,13 @@ namespace oFormsWeb.Controllers
     {
         private readonly ILogger<FormController> _logger;
         private readonly IFormRepository _formRepository;
+        private readonly IApiFormRepository _apiFormRepository;
 
-        public FormController(ILogger<FormController> logger, IFormRepository formRepository)
+        public FormController(ILogger<FormController> logger, IFormRepository formRepository, IApiFormRepository apiFormRepository)
         {
             _logger = logger;
             _formRepository = formRepository;
+            _apiFormRepository = apiFormRepository;
         }
 
         // GET: Form
@@ -66,6 +68,13 @@ namespace oFormsWeb.Controllers
                 newForm.ApiKey = Guid.NewGuid().ToString();
                 newForm.FormTemplate = new FormTemplate(new MessageFormat());
                 _formRepository.InsertOrUpdateForm(GetUserObjectId(), newForm);
+                FormApiMap newFormApiMap = new FormApiMap();
+                newFormApiMap.ApiKey = newForm.ApiKey;
+                //newFormApiMap.ClientId = GetUserObjectId();
+                //newFormApiMap.FormId = newForm.Id;
+                //newFormApiMap.NumberOfRequests = 0;
+                newFormApiMap.EmailInfo = newForm.FormTemplate;
+                _apiFormRepository.InsertUpdateFormApiMap(GetUserObjectId(), newFormApiMap);
                 return RedirectToAction(nameof(Index));
             }
             catch

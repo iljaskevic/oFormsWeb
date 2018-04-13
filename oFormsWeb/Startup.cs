@@ -40,6 +40,7 @@ namespace oFormsWeb
             // Add application services.
             services.AddSingleton<IFormRepository, FormRepository>();
             services.AddSingleton<IUserRepository, UserRepository>();
+            services.AddSingleton<IApiFormRepository, ApiFormRepository>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
